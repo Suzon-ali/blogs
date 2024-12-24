@@ -1,4 +1,4 @@
-export type TUser = {
+export type TUserLogin = {
   email: string;
   password: string;
 };

@@ -1,12 +1,12 @@
-import { model, Schema, Types } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { TBlog } from './blog.interface';
 
 const blogSchema = new Schema(
   {
     title: { type: String, required: true },
     content: { type: String, required: true },
-    author: { type: Types.ObjectId },
-    isPublished: { type: Boolean },
+    author: { type: Schema.Types.ObjectId, ref: 'User' },
+    isPublished: { type: Boolean, default: true },
   },
   {
     timestamps: true,

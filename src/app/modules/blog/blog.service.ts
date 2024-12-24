@@ -7,6 +7,12 @@ const creatBlogIntoDB = async (payload: TBlog) => {
   return result;
 };
 
+const getAllBlogsFromDB = async () => {
+  const result = await Blog.find();
+  return result;
+};
+
 export const BlogServices = {
   creatBlogIntoDB,
+  getAllBlogsFromDB,
 };

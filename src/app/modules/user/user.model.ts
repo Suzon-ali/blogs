@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { model, Schema } from 'mongoose';
-import { TUser } from './user.interface';
+import { TUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
 
-const userSchema = new Schema(
+const userSchema = new Schema<TUser, UserModel>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -15,13 +15,14 @@ const userSchema = new Schema(
       required: true,
       default: 'user',
     },
-    isBlocked: { type: String, default: false },
+    isBlocked: { type: Boolean, required: true, default: false },
   },
   { timestamps: true },
 );
 
+//middlewares
 userSchema.pre('save', async function (next) {
-  const user = this; // doc
+  const user = this;
   user.password = await bcrypt.hash(
     user.password,
     Number(config.bcrypt_salt_rounds),
@@ -34,4 +35,19 @@ userSchema.post('save', function (doc, next) {
   next();
 });
 
-export const User = model<TUser>('User', userSchema);
+//statics
+userSchema.statics.isUserExistsByEmail = async function (email) {
+  const existingUser = await User.findOne({
+    email: { $regex: email, $options: 'i' },
+  }).select('+password');
+  return existingUser;
+};
+
+userSchema.statics.isPasswordMatched = async function (
+  plainTextPassword,
+  hashedPassword,
+) {
+  return await bcrypt.compare(plainTextPassword, hashedPassword);
+};
+
+export const User = model<TUser, UserModel>('User', userSchema);

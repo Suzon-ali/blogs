@@ -1,11 +1,19 @@
 import { z } from 'zod';
+import { User } from './user.model';
 
 const userValidationSchema = z.object({
   body: z.object({
     name: z.string({ required_error: 'User is required!' }),
     email: z
       .string({ required_error: 'User is required!' })
-      .email({ message: 'Invalid email format!' }),
+      .email({ message: 'Invalid email format!' })
+      .refine(
+        async (email) => {
+          const user = await User.findOne({ email });
+          return !user;
+        },
+        { message: 'User already exist' },
+      ),
     password: z
       .string({ required_error: 'User is required!' })
       .min(4, { message: 'Password is less than 6 charecters' })
