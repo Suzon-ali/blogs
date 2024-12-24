@@ -19,4 +19,5 @@ export interface UserModel extends Model<TUser> {
     plainTextPassword: string,
     hashedPassword: string,
   ): Promise<TUser | null>;
+  isUserExistsById(id: string): Promise<TUser | null>;
 }

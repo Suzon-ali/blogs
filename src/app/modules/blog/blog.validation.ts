@@ -9,12 +9,14 @@ const blogValidationSchema = z.object({
       .string({ required_error: 'Content is requierd!' })
       .min(50, { message: 'Min 50 Charecters' }),
     author: z
-      .string({ required_error: 'Author is requierd!' })
+      .string({
+        required_error: 'Author is requierd!',
+        invalid_type_error: 'Author must need to be string',
+      })
       .min(10, { message: 'Min 2 Charecters' })
       .optional(),
-    isPublished: z
-      .boolean({ required_error: 'isPublished is requierd!' })
-      .optional(),
+    isPublished: z.boolean({ invalid_type_error: 'Invalid type' }).optional(),
+    isDeleted: z.boolean({ invalid_type_error: 'Invalid type' }).optional(),
   }),
 });
 

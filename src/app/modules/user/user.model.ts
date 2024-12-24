@@ -43,6 +43,13 @@ userSchema.statics.isUserExistsByEmail = async function (email) {
   return existingUser;
 };
 
+userSchema.statics.isUserExistsById = async function (id) {
+  const existingUser = await User.findOne({
+    _id: id,
+  });
+  return existingUser;
+};
+
 userSchema.statics.isPasswordMatched = async function (
   plainTextPassword,
   hashedPassword,
