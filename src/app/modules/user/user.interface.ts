@@ -18,6 +18,6 @@ export interface UserModel extends Model<TUser> {
   isPasswordMatched(
     plainTextPassword: string,
     hashedPassword: string,
-  ): Promise<TUser | null>;
+  ): Promise<boolean>;
   isUserExistsById(id: string): Promise<TUser | null>;
 }

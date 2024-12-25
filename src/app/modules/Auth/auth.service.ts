@@ -2,8 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import AppError from '../../error/AppError';
 import { User } from '../user/user.model';
 import { TUserLogin } from './auth.interface';
-import jwt from 'jsonwebtoken';
 import config from '../../config';
+import createToken from './auth.utils';
 
 const loginUserIntoDB = async (payload: TUserLogin) => {
   const user = await User.isUserExistsByEmail(payload?.email);
@@ -29,12 +29,20 @@ const loginUserIntoDB = async (payload: TUserLogin) => {
     author: user?._id,
   };
 
-  const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
-    expiresIn: '30D',
-  });
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+  const refreshToken = createToken(
+    jwtPayload,
+    config.jwt_refresh_secret as string,
+    config.jwt_refresh_expires_in as string,
+  );
 
   return {
     accessToken,
+    refreshToken,
   };
 };
 

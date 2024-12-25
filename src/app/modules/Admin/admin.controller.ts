@@ -11,6 +11,9 @@ import { Blog } from '../blog/blog.model';
 const blockUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.userId;
 
+  console.log('Request Cookies:', req.cookies); // Debugging
+  console.log('Request Headers:', req.headers); // Debugging
+
   // Check if the ID is a valid ObjectId
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new AppError(StatusCodes.BAD_REQUEST, 'Invalid userId!', '');
