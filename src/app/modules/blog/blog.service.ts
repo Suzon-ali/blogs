@@ -2,6 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import AppError from '../../error/AppError';
 import { TBlog } from './blog.interface';
 import { Blog } from './blog.model';
+import QueryBuilder from '../../builder/QueryBuilder';
+import { blogSearchFields } from './blog.constant';
 
 const creatBlogIntoDB = async (payload: TBlog) => {
   const newBlog = new Blog(payload);
@@ -9,8 +11,15 @@ const creatBlogIntoDB = async (payload: TBlog) => {
   return result;
 };
 
-const getAllBlogsFromDB = async () => {
-  const result = await Blog.find().populate('author');
+const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
+  const blogQuery = new QueryBuilder(Blog.find().populate('author'), query)
+    .search(blogSearchFields.blogSearchableFields)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await blogQuery.modelQuery;
   return result;
 };
 
@@ -38,8 +47,8 @@ const getSingleBlogFromDB = async (id: string) => {
 };
 
 export const BlogServices = {
-  creatBlogIntoDB,
   getAllBlogsFromDB,
+  creatBlogIntoDB,
   updateBlogIntoDB,
   deleteBlogFromDB,
   getSingleBlogFromDB,
