@@ -9,7 +9,9 @@ const app: Application = express();
 
 //parser
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:3000','https://assignment-3-blogs.vercel.app']
+}));
 app.use(cookieParser());
 
 //router
