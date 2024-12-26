@@ -22,7 +22,7 @@ class QueryBuilder<T> {
     return this;
   }
 
-  // Filter blogs by specified fields (e.g., author ID)
+  // Filter blogs by author ID
   filter() {
     const filter = this?.query?.filter;
     if (filter) {

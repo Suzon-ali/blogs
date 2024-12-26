@@ -11,16 +11,21 @@ import { Blog } from '../blog/blog.model';
 const blockUser = catchAsync(async (req: Request, res: Response) => {
   const id = req.params.userId;
 
-  console.log('Request Cookies:', req.cookies); // Debugging
-  console.log('Request Headers:', req.headers); // Debugging
-
   // Check if the ID is a valid ObjectId
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new AppError(StatusCodes.BAD_REQUEST, 'Invalid userId!', '');
   }
+
+  //fetch user
+  const user = await User.isUserExistsById(id);
+
   // Check if the user is exist
-  if (!(await User.isUserExistsById(id))) {
+  if (!user) {
     throw new AppError(StatusCodes.NOT_FOUND, 'User not found', '');
+  }
+  // Check if the user is already blocked
+  if (user && user.isBlocked) {
+    throw new AppError(StatusCodes.BAD_REQUEST, 'User is already blocked!', '');
   }
   const result = await AdminServices.blockUserFromDB(id);
 

@@ -40,7 +40,7 @@ const getSingleBlogById = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: StatusCodes.OK,
     success: true,
-    message: 'Blog updated succesfully!',
+    message: 'Blog fetched succesfully!',
     data: result,
   });
 });

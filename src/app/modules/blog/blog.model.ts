@@ -1,4 +1,4 @@
-import { Aggregate, model, Schema } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { BlogModel, TBlog } from './blog.interface';
 
 const blogSchema = new Schema<TBlog, BlogModel>(
@@ -16,24 +16,16 @@ const blogSchema = new Schema<TBlog, BlogModel>(
 
 //middlewares
 
-blogSchema.pre('find', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-blogSchema.pre('findOne', function (next) {
-  this.find({ isDeleted: { $ne: true } });
-  next();
-});
-
-blogSchema.pre('findOneAndUpdate', function (next) {
-  this.find({ isDeleted: { $ne: true } });
+blogSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function (next) {
+  this.where({ isDeleted: { $ne: true }, isPublished: { $ne: false } });
   next();
 });
 
 blogSchema.pre('aggregate', function (next) {
-  const aggregate = this as Aggregate<{ isDeleted: true }>;
-  aggregate.pipeline().unshift({ $match: { $ne: true } });
+  const pipeline = this.pipeline();
+  pipeline.unshift({
+    $match: { isDeleted: { $ne: true }, isPublished: { $ne: false } },
+  });
   next();
 });
 

@@ -12,14 +12,14 @@ const loginUser = catchAsync(async (req, res) => {
 
   res.cookie('refreshToken', refreshToken, {
     secure: config.node_env === 'development',
-    httpOnly: false,
+    httpOnly: true,
   });
 
   sendResponse(res, {
     success: true,
     message: 'User logged in succesfully!',
     statusCode: StatusCodes.OK,
-    data: { accessToken, refreshToken },
+    data: { accessToken },
   });
 });
 

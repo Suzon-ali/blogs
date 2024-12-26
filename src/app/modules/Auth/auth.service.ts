@@ -15,12 +15,12 @@ const loginUserIntoDB = async (payload: TUserLogin) => {
   //check if it's not blocked user
   const isBlocked = user.isBlocked;
   if (isBlocked) {
-    throw new AppError(StatusCodes.FORBIDDEN, 'Blocked', '');
+    throw new AppError(StatusCodes.FORBIDDEN, 'User is blocked', '');
   }
 
   //check if password is matched
   if (!(await User.isPasswordMatched(payload?.password, user?.password))) {
-    throw new AppError(StatusCodes.FORBIDDEN, 'Password does not matched', '');
+    throw new AppError(StatusCodes.FORBIDDEN, 'Wrong password', '');
   }
 
   const jwtPayload = {
