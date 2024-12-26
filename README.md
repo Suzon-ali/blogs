@@ -73,10 +73,14 @@ Make sure you have the following installed:
    ```
 
 4. Create a `.env` file in the root directory and configure the following variables:
-   ```env
-   PORT=3000
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_secret_key
+   ```PORT=3000
+DATABASE_URL=your_mongodb_connection_string
+NODE_ENV=development
+BCRYPT_SALT_ROUNDS=your_salt
+JWT_ACCESS_SECRET=your_jwt_access_secret
+JWT_REFRESH_SECRET=your_jwt_refresh_secret
+JWT_ACCESS_EXPIRES_IN=your_access_expiration_time(in days ,ex. 1D)
+JWT_REFRESH_EXPIRES_IN=your_refresh_expiration_time(in days, ex. 365D)
    ```
 
 ### Running the Application
