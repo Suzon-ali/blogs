@@ -6,7 +6,7 @@ The Blog Platform Backend is a robust backend system designed to support a blogg
 ---
 
 ## Live URL
-🚀 **Coming Soon** (https://assignment-3-blogs.vercel.app/api/)
+🚀 **Blog Platform Backend** https://assignment-3-blogs.vercel.app/api/
 
 ---
 
